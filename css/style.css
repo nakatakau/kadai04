@@ -1,0 +1,300 @@
+/* 全体の設定 */
+h1 {
+  font-size: 60px;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: yellow;
+  -webkit-text-fill-color: white;
+  border: 2px solid yellow;
+  border-radius: 3%;
+  width: 40%;
+  text-align: center;
+  margin: 10px auto;
+  background-color: rgba(255, 255, 0, 0.05);
+}
+
+body {
+  color: azure;
+  font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro",
+    "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体",
+    "メイリオ", sans-serif;
+}
+ul {
+  padding-left: 0px;
+}
+li {
+  text-decoration: none;
+  list-style: none;
+  max-width: 80%;
+  height: 35px;
+  background-color: aquamarine;
+  margin: 10px auto;
+  padding-top: 3px;
+  border-radius: 1%;
+  padding-left: 10px;
+  text-align: left;
+  color: rgb(39, 37, 37);
+  font-weight: bold;
+  font-size: 20px;
+}
+li:hover {
+  background-color: rgb(211, 245, 233);
+}
+
+/* to-do-listの設定 */
+.border {
+  border: 3px solid aquamarine;
+  text-align: center;
+}
+.to-do-list {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 1400px;
+  padding: 10px;
+}
+.not_complete {
+  width: 100%;
+  margin: 0 15px 0 30px;
+}
+.is_doing {
+  width: 100%;
+  margin: 0 15px 0 30px;
+}
+.incomplete {
+  width: 100%;
+  margin: 0 15px 0 30px;
+}
+
+.items {
+  border: 3px solid aquamarine;
+  width: 100%;
+  height: auto;
+  border-radius: 5%;
+}
+
+.main-title {
+  text-align: center;
+  margin: 0 auto;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: yellow;
+  -webkit-text-fill-color: white;
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+.li_count{
+  margin-left: 15px;
+}
+.deco {
+  margin-top: 5px;
+}
+
+.deco > button {
+  margin-top: 0px;
+  font-size: 20px;
+}
+
+.deco > button :hover {
+  background-color: rgba(255, 255, 255, 0.427);
+}
+
+/* モーダルウィンドウ */
+/* 入力画面 */
+.blind {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+}
+.input_area {
+  color: white;
+  width: 400px;
+  border-radius: 4px;
+  border: 4px solid aquamarine;
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 0 10px;
+  z-index: 2;
+  transform: translate(0, 0px);
+  display: none;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.day-box_area {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.day-box_area > p {
+  margin-top: 15px;
+}
+
+.day-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+.day-box > div > p {
+  font-size: 14px;
+}
+
+input[type="date"] {
+  border: aquamarine 2px solid;
+  width: 90%;
+  color: white;
+  position: relative;
+}
+
+input[type="date"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /*カレンダーアイコンを消す*/
+}
+
+input[type="date"]::-webkit-clear-button {
+  -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.form_area > h2 {
+  text-align: center;
+}
+
+.title_area {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.title_area > p {
+  text-align: center;
+}
+
+.title_area > input {
+  border: aquamarine 2px solid;
+  width: 68%;
+  color: white;
+  margin-right: 12px;
+}
+
+.description_title {
+  margin-top: 14px;
+}
+
+textarea[name="description"] {
+  border: aquamarine 2px solid;
+  width: 100%;
+  height: 110px;
+  color: white;
+  margin-right: 12px;
+}
+
+.check-list-title {
+  margin-top: 14px;
+}
+
+input[type="checkbox"] {
+  border: aquamarine 2px solid;
+  margin-bottom: 8px;
+  margin-left: 4px;
+}
+
+#checkbox-text1 {
+  resize: none; /*縦方向の縮小を禁止 */
+  width: 92%;
+  height: 20px;
+  color: white;
+  margin-top: 4px;
+}
+
+.check-list1 {
+  border: aquamarine 2px solid;
+  margin-bottom: 5px;
+}
+
+#checkbox-text2 {
+  resize: none; /*縦方向の縮小を禁止 */
+  width: 92%;
+  height: 20px;
+  color: white;
+  margin-top: 4px;
+}
+
+.check-list2 {
+  border: aquamarine 2px solid;
+  margin-bottom: 5px;
+}
+
+#checkbox-text3 {
+  resize: none; /*縦方向の縮小を禁止 */
+  width: 92%;
+  height: 20px;
+  color: white;
+  margin-top: 4px;
+}
+
+.check-list3 {
+  border: aquamarine 2px solid;
+  margin-bottom: 5px;
+}
+
+#checkbox-text4 {
+  resize: none; /*縦方向の縮小を禁止 */
+  width: 92%;
+  height: 20px;
+  color: white;
+  margin-top: 4px;
+}
+
+.check-list4 {
+  border: aquamarine 2px solid;
+  margin-bottom: 5px;
+}
+
+#checkbox-text5 {
+  resize: none; /*縦方向の縮小を禁止 */
+  width: 92%;
+  height: 20px;
+  color: white;
+  margin-top: 4px;
+}
+
+.check-list5 {
+  border: aquamarine 2px solid;
+  margin-bottom: 5px;
+}
+
+.center {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 14px;
+}
+
+#close_btn:hover {
+  background-color: rgba(128, 128, 128, 0.7);
+}
+
+.trash {
+  text-align: right;
+  margin-right: 30px;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+.position {
+  color: aquamarine;
+}
+
+/* ゴミ箱にドラックオーバーされた際に適用 */
+.active {
+  color: red;
+}

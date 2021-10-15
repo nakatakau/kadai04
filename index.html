@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JUST DO IT</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+<link rel="stylesheet" href="css/style.css">
+<!-- FontAwesome -->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+<header>
+</header>
+<!-- タスク管理 -->
+<main>
+    <div class="border">
+        <h1>JUST DO IT</h1>
+        <div class="to-do-list">
+            <!-- 未完了項目 -->
+            <div class="not_complete">
+                <h2 class="main-title">やること<span class="li_count" id="li_count1"></span>個</h2>
+                <ul class="items" id="items1" ondrop="doDrop(event)">
+                    <div class="deco">
+                        <button id="add_btn1" class="add_btn"><i class="fas fa-plus-circle">追加</i></button>
+                    </div>
+                </ul>
+            </div>
+            <!-- 仕掛中 -->
+            <div class="is_doing">
+                <h2 class="main-title">作業中<span class="li_count" id="li_count2"></span>個</h2>
+                <ul class="items" id="items2" ondrop="doDrop(event)">
+                    <div class="deco">
+                        <button id="add_btn2" class="add_btn"><i class="fas fa-plus-circle">追加</i></button>
+                    </div>
+                </ul>
+            </div>
+            <!-- 完了 -->
+            <div class="incomplete">
+                <h2 class="main-title">完了<span class="li_count" id="li_count3"></span>個</h2>
+                <ul class="items" id="items3" ondrop="doDrop(event)">
+                    <div class="deco">
+                        <button id="add_btn3" class="add_btn"><i class="fas fa-plus-circle">追加</i></button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="trash">
+            <i class="far fa-trash-alt fa-3x position"></i>
+        </div>
+    </div>
+</main>
+<footer>
+</footer>
+<!-- モーダルウィンドウ -->
+<!-- 背景ブラインド -->
+<div class="blind" id=""></div>
+    <!-- 入力画面 -->
+    <div class="input_area" id="input_id">
+        <form class="form_area" id="form-id" action="">
+            <h2>入力フォーム</h2>
+            <!-- タイトル -->
+            <div class="title_area">
+                <p>タイトル</p>
+                <input type="text" name="title" id="title" placeholder="タイトルを入力" autocomplete="off">
+            </div>
+            <!-- 開始日 -->
+            <div class="day-box_area">
+                <p>スケジュール</p>
+                <div class="day-box">
+                    <div>
+                        <p>開始日</p>
+                        <input type="date" name="start-date" id="start-date">
+                    </div>
+                    <div>
+                        <p>終了日</p>
+                        <input type="date" name="end-date" id="end-date">
+                    </div>
+                </div>
+            </div>
+            <!-- 説明 -->
+            <p class="description_title">内容</p>
+            <textarea name="description" id="description" cols="30" rows="10" placeholder="内容"></textarea>
+            <!-- チェックボックス -->
+            <input type="text" name="dummy" style="display:none;"> <!--エンターで誤送信をしない用にダミー-->
+            <p class="check-list-title">チェックリスト(最大5つまで)</p>
+            <div class="check-list1">
+                <input type="checkbox" name="checkbox1" id="checkbox1">
+                <textarea id="checkbox-text1" name="checkbox1" cols="30" rows="1" placeholder="内容"></textarea>
+            </div>
+            <div class="check-list2">
+                <input type="checkbox" name="checkbox2" id="checkbox2">
+                <textarea id="checkbox-text2" name="checkbox2" cols="30" rows="1" placeholder="内容"></textarea>
+            </div>
+            <div class="check-list3">
+                <input type="checkbox" name="checkbox3" id="checkbox3">
+                <textarea id="checkbox-text3" name="checkbox3" cols="30" rows="1" placeholder="内容"></textarea>
+            </div>
+            <div class="check-list4">
+                <input type="checkbox" name="checkbox4" id="checkbox4">
+                <textarea id="checkbox-text4" name="checkbox4" cols="30" rows="1" placeholder="内容"></textarea>
+            </div>
+            <div class="check-list5">
+                <input type="checkbox" name="checkbox5" id="checkbox5">
+                <textarea id="checkbox-text5" name="checkbox5" cols="30" rows="1" placeholder="内容"></textarea>
+            </div>
+        </form>
+        <div class="center">
+            <button class="btn" id="close_btn"><i class="fas fa-times-circle"></i>閉じる</button>
+        </div>
+    </div>
+
+<!-- 以下JS -->
+<!--  背景 bubbly.jsの導入 -->
+<script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+<!-- 背景の動きの設定 -->
+<script>
+    bubbly({
+        blur: 5, //ぼかし
+        colorStart: '#030517', //背景グラデーション始まりの色
+        colorStop: '#0e2832', //背景グラデーション終わりの色
+        radiusFunc: () => Math.random() * 3, //大きさ
+        angleFunc: () => -Math.PI / 90, //向き
+        velocityFunc: () => Math.random() * 6, //速さ
+        bubbleFunc: () => `hsla(${200 + Math.random() * 50}, 100%, 90%, .8)`, //色彩
+        bubbles: 40, //泡の数
+        compose: 'source-over',
+    });
+</script>
+
+<!-- sortable.jsの導入 -->
+<script src="js/Sortable.js"></script>
+<script type="text/javascript" src="st/prettify/prettify.js"></script>
+<script type="text/javascript" src="st/prettify/run_prettify.js"></script>
+<script src="st/app.js"></script>
+
+<!-- sortable.jsの設定 -->
+<script>
+    /*-----------------------------------------------------------------*/
+    // 基本設定
+
+    // 未完了リスト内の親要素を取得
+    const el1 = document.querySelector('#items1');
+    // 未完了リストの初期設定
+    Sortable.create(el1,{
+        group:{ name: 'shares' }, //他のリストに移動可能
+        animation: 100
+    });
+
+    //仕掛中リスト内の親要素を取得
+    const el2 = document.querySelector('#items2');
+    // 仕掛中リストの初期設定
+    Sortable.create(el2,{
+        group:{ name: 'shares' }, //他のリストに移動可能
+        animation: 100
+    });
+
+    //完了リスト内の親要素を取得
+    const el3 = document.querySelector('#items3');
+    // 完了リストの初期設定
+    Sortable.create(el3, {
+        group: { name: 'shares' }, //他のリストに移動可能
+        animation: 100
+    });
+
+    // 生成したliのクラスを定義
+    const item = class{
+      //セッターメソッド
+        set myName(value) {
+            this.name = value;
+        }
+        set myTitle(value) {
+            this.title = value;
+        }
+        set myStart_date(value) {
+            this.start_date = value;
+        }
+        set myEnd_date(value) {
+            this.end_date = value;
+        }
+        set myDescription(value) {
+            this.description = value;
+        }
+        set myCheckbox1(value) {
+            this.checkbox1 = value;
+            this.check1 = false;
+        }
+        set myCheckbox2(value) {
+            this.checkbox2 = value;
+            this.check2 = false;
+        }
+        set myCheckbox3(value) {
+            this.checkbox3 = value;
+            this.check3 = false;
+        }
+        set myCheckbox4(value) {
+            this.checkbox4 = value;
+            this.check4 = false;
+        }
+        set myCheckbox5(value) {
+            this.checkbox5 = value;
+            this.check5 = false;
+        }
+        set myFlag(value) {
+            this.flag = value; //やること=flag1, 仕掛中=flag2, 完了=flag3
+        }
+    };
+    /*-----------------------------------------------------------------*/
+    // ウィンドウロード時の設定
+
+    let num_array = []; //カウント用の配列を作成
+    // liタグの内容を呼び起こす
+    // ローカルストレージに格納されたデータを調べる
+    const local_num = localStorage.length
+    for (let i=0; i<local_num; i++){
+        let key_name = localStorage.key(i); //格納されたキーを取得
+        if(key_name.indexOf('li_item') > -1){ //取得したキーにliのID名であれば
+            let json = localStorage.getItem(key_name); //valueに取得したJSONをGET
+            let obj = JSON.parse(json); //JSONをオブジェクト化
+            let li = document.createElement('li'); //li要素を作成
+            li.className = obj.flag; //クラス名を追加
+            li.id = key_name; //IDを追加
+            li.textContent = obj.title; //タイトルを追加
+            li.addEventListener('dblclick', appendModal, false); //ダブルクリックイベントを追加
+            if(li.className == 'flag1') {
+                el1.append(li);  //el1の最後にliを追加
+            } else if(li.className == 'flag2') {
+                el2.append(li);  //el1の最後にliを追加
+            } else if(li.className == 'flag3') {
+                el3.append(li);  //el1の最後にliを追加
+            }
+        } else { //num_arrayを呼びおこす
+            let json = localStorage.getItem(key_name); //valueに取得したJSONをGET
+            num_array = JSON.parse(json); //JSONをオブジェクト化
+        }
+    }
+
+    /*-----------------------------------------------------------------*/
+    // liタグが他のul要素に移動した際にクラス名のフラグを変更
+    function doDrop(e) {
+        const get_html = $(e.currentTarget); //ドロップされた親要素全て取得
+        const div = $.makeArray(get_html.parent()); //ulの親要素のdivを取得
+        const div_name = div[0].className;
+        const li = get_html.children('li').get(); //li要素の配列を取得（.getでjQueryの配列を通常配列に変更）
+        if (div_name == 'not_complete'){
+            for(let i = 0; i < li.length; i++){
+                if(!(li[i].className.indexOf('flag1') == 0)){ //クラス名の中にflag1が混ざっていない場合
+                    li[i].className = 'flag1';
+                    let li_id = li[i].id;
+                    let value = localStorage.getItem(li_id); //ローカルストレージにあるvalueを呼び起こす
+                    let obj = JSON.parse(value); //JSONで格納していた文字列をオブジェクトに格納し、objに代入
+                    obj.flag = 'flag1'; //プロパティフラグを変更
+                    let json = JSON.stringify(obj); //JSONに変換
+                    localStorage.setItem(li_id,json); //ローカルストレージに格納
+                    countLi1();
+                    countLi2();
+                    countLi3();
+                }
+            }
+        } else if (div_name == 'is_doing'){
+            for (let i = 0; i < li.length; i++) {
+                if (!(li[i].className.indexOf('flag2') == 0)) { //クラス名の中にflag1が混ざっていない場合
+                    li[i].className = 'flag2';
+                    let li_id = li[i].id;
+                    let value = localStorage.getItem(li_id); //ローカルストレージにあるvalueを呼び起こす
+                    let obj = JSON.parse(value); //JSONで格納していた文字列をオブジェクトに格納し、objに代入
+                    obj.flag = 'flag2'; //プロパティフラグを変更
+                    let json = JSON.stringify(obj); //JSONに変換
+                    localStorage.setItem(li_id, json); //ローカルストレージに格納
+                    countLi1();
+                    countLi2();
+                    countLi3();
+                }
+            }
+        } else if (div_name == 'incomplete'){
+            for (let i = 0; i < li.length; i++) {
+                if (!(li[i].className.indexOf('flag3') == 0)) { //クラス名の中にflag1が混ざっていない場合
+                    li[i].className = 'flag3';
+                    let li_id = li[i].id;
+                    let value = localStorage.getItem(li_id); //ローカルストレージにあるvalueを呼び起こす
+                    let obj = JSON.parse(value); //JSONで格納していた文字列をオブジェクトに格納し、objに代入
+                    obj.flag = 'flag3'; //プロパティフラグを変更
+                    let json = JSON.stringify(obj); //JSONに変換
+                    localStorage.setItem(li_id, json); //ローカルストレージに格納
+                    countLi1();
+                    countLi2();
+                    countLi3();
+                }
+            }
+        }
+    }
+
+    /*-----------------------------------------------------------------*/
+    // 追加ボタン、モーダルウィンドウの設定
+
+    // liリストに追加用のユニークなナンバーを追加する
+    // 追加ボタンを押すとliタグが出てくる
+    $('#add_btn1').on('click', function(){
+        let num = num_array.length; //生成した要素のナンバーをカウント
+        num_array[num] ='済'; //配列にフラグをつける
+        let json_array = JSON.stringify(num_array); //フラグをつけた配列をJSON化
+        localStorage.setItem('num_array', json_array); //配列をローカルストレージに格納
+        let btn = document.querySelector('#add_btn1')
+        let li = document.createElement('li'); //li要素を作成
+        li.addEventListener('dblclick', appendModal, false); //ダブルクリックイベントを追加
+        li.className = 'flag1' //クラスの追加
+        li.id = 'li_item' + num; //ID名追加
+        li.textContent = "ダブルクリックで入力";
+        el1.append(li);  //el1の最後にliを追加
+        countLi1()
+    });
+    $('#add_btn2').on('click', function () {
+        let num = num_array.length; //生成した要素のナンバーをカウント
+        num_array[num] = '済'; //配列にフラグをつける
+        let json_array = JSON.stringify(num_array); //フラグをつけた配列をJSON化
+        localStorage.setItem('num_array', json_array); //配列をローカルストレージに格納
+        let btn = document.querySelector('#add_btn2')
+        let li = document.createElement('li'); //li要素を作成
+        li.addEventListener('dblclick', appendModal, false); //ダブルクリックイベントを追加
+        li.className = 'flag2'
+        li.id = 'li_item' + num; //ID名追加
+        num_array[num] = '済'; //配列にフラグをつける
+        li.textContent = "ダブルクリックで入力";
+        el2.append(li); //el2の最後にliを追加
+        countLi2()
+    });
+    $('#add_btn3').on('click', function () {
+        let num = num_array.length; //生成した要素のナンバーをカウント
+        num_array[num] = '済'; //配列にフラグをつける
+        let json_array = JSON.stringify(num_array); //フラグをつけた配列をJSON化
+        localStorage.setItem('num_array', json_array); //配列をローカルストレージに格納
+        let btn = document.querySelector('#add_btn3')
+        let li = document.createElement('li'); //li要素を作成
+        li.addEventListener('dblclick', appendModal, false); //ダブルクリックイベントを追加
+        li.className = 'flag3'
+        li.id = 'li_item' + num; //ID名追加
+        num_array[num] = '済'; //配列にフラグをつける
+        li.textContent = "ダブルクリックで入力";
+        el3.append(li); //el3の最後にliを追加
+        countLi3()
+    });
+    // liタグを押下したらモーダルが現れる
+        function appendModal() {
+            const li_id = $(this).attr('id'); //クリックしたliタグのidを取得
+            const li_class = $(this).attr('class'); //クリックしたliタグのclassを取得
+            $('#title').css('border', '3px solid aquamarine'); //リセット用
+            // フォーム内容の初期化
+            document.querySelector('#title').value = "";
+            document.querySelector('#start-date').value = "";
+            document.querySelector('#end-date').value = "";
+            document.querySelector('#description').value = "";
+            document.querySelector('#checkbox-text1').value = "";
+            document.querySelector('#checkbox-text2').value = "";
+            document.querySelector('#checkbox-text3').value = "";
+            document.querySelector('#checkbox-text4').value = "";
+            document.querySelector('#checkbox-text5').value = "";
+            document.querySelector('#checkbox1').checked = false;
+            document.querySelector('#checkbox2').checked = false;
+            document.querySelector('#checkbox3').checked = false;
+            document.querySelector('#checkbox4').checked = false;
+            document.querySelector('#checkbox5').checked = false;
+            for (let i = 1; i <= 5; i++) {
+                let text = document.getElementById("checkbox-text" + i + "");
+                text.style.textDecoration = "none";
+                text.style.color = "white";
+                }
+            // 既にローカルストレージに保存しているデータか否か
+            if (localStorage.getItem(li_id) == null) {
+                let input_area = document.querySelector('.input_area'); //入力画面の情報を取得
+                input_area.id = li_id; //クローズ時に呼び起こすためにinput_areaにliのidを格納（どのliタグを押下したか記憶）
+                let form_area = document.querySelector('.form_area'); //入力フォームタグの情報を取得
+                form_area.id = li_class; //クローズ時に呼び起こすためにinput_areaにliのidを格納（どのliタグを押下したか記憶）
+            } else {
+                let input_area = document.querySelector('.input_area'); //入力画面の情報を取得
+                input_area.id = li_id; //クローズ時に呼び起こすためにinput_areaにliのidを格納（どのliタグを押下したか記憶）
+                let form_area = document.querySelector('.form_area'); //入力フォームタグの情報を取得
+                form_area.id = li_class; //クローズ時に呼び起こすためにinput_areaにliのidを格納（どのliタグを押下したか記憶）
+                // 既にローカルストレージに該当のliデータがある場合
+                let value = localStorage.getItem(li_id); //ローカルストレージにあるvalueを呼び起こす
+                let obj = JSON.parse(value); //JSONで格納していた文字列をオブジェクトに格納し、objに代入
+                // 各プロパティを入力画面に呼び起こす
+                document.querySelector('#title').value = obj.title;
+                document.querySelector('#start-date').value = obj.start_date;
+                document.querySelector('#end-date').value = obj.end_date;
+                document.querySelector('#description').value = obj.description;
+                document.querySelector('#checkbox-text1').value = obj.checkbox1;
+                document.querySelector('#checkbox-text2').value = obj.checkbox2;
+                document.querySelector('#checkbox-text3').value = obj.checkbox3;
+                document.querySelector('#checkbox-text4').value = obj.checkbox4;
+                document.querySelector('#checkbox-text5').value = obj.checkbox5;
+                // チェックボックスにチェックがあるか判断
+                for (let i = 1; i <= 5; i++) {
+                    let Name = 'check' + i;
+                    if(obj[Name] == true){
+                        let judge = document.getElementById("checkbox" + i + "");
+                        judge.checked = true; //objがtrueならばチェック
+                        let text = judge.nextElementSibling;
+                        text.style.textDecoration = "line-through";
+                        text.style.color = "gray";
+                    } else {
+                        let judge = document.getElementById("checkbox" + i + "");
+                        let text = judge.nextElementSibling;
+                        text.style.textDecoration = "none";
+                        text.style.color = "white";
+                    }
+                }
+            }
+            $('.blind').show();
+            $('.input_area').show();
+        }
+    // 終了を押したらモーダルウィンドウ非表示
+        $('#close_btn').on('click', function(){
+            if (document.querySelector('#title').value == ""){
+                alert('タイトルは入力必須です。');
+                $('#title').css('border', 'red 3px solid');
+            } else {
+                // ローカルストレージから呼び起こす
+                let input_area = document.querySelector('.input_area'); //入力画面の情報を取得
+                let form_area = document.querySelector('.form_area'); //入力フォームの情報を取得
+                let key = input_area.id; //inputエリアのid（li_id）をkeyに格納
+                let flag = form_area.id; //formエリアのid(li_class)をflagに格納
+                let new_obj = new item; //新しいオブジェクトを生成
+                // 入力画面に記入されたデータをnew_objに更新
+                new_obj.myName = key; // 引き出したオブジェクトの名前を代入
+                new_obj.myTitle = document.querySelector('#title').value;
+                new_obj.myStart_date = document.querySelector('#start-date').value;
+                new_obj.myEnd_date = document.querySelector('#end-date').value;
+                new_obj.myDescription = document.querySelector('#description').value;
+                new_obj.myCheckbox1 = document.querySelector('#checkbox-text1').value;
+                new_obj.myCheckbox2 = document.querySelector('#checkbox-text2').value;
+                new_obj.myCheckbox3 = document.querySelector('#checkbox-text3').value;
+                new_obj.myCheckbox4 = document.querySelector('#checkbox-text4').value;
+                new_obj.myCheckbox5 = document.querySelector('#checkbox-text5').value;
+                new_obj.myFlag = flag;
+                // チェックボックスにチェックがあるか判断
+                for(let i = 1; i <=5; i++){
+                    let judge = document.getElementById("checkbox" + i + "");
+                    if (judge.checked){
+                        let Name = 'check' + i;
+                        new_obj[Name] = true;
+                    }
+                }
+                let json = JSON.stringify(new_obj); //更新オブジェクトをJSON化
+                localStorage.setItem(key, json); //ローカルストレージを更新し保存
+                let li_id = document.querySelector("#" + key + ""); //liタグを選択
+                li_id.textContent = document.querySelector('#title').value; //liタグにタイトルを挿入
+                $('.blind').hide();
+                $('.input_area').hide();
+            }
+        })
+    // ブラインドをクリックしたらモーダルウィンドウ非表示
+        $('.blind').on('click', function () {
+            if (document.querySelector('#title').value == "") {
+                alert('タイトルは入力必須です。');
+                $('#title').css('border', 'red 3px solid');
+            } else {
+                // ローカルストレージから呼び起こす
+                // ローカルストレージから呼び起こす
+                let input_area = document.querySelector('.input_area'); //入力画面の情報を取得
+                let form_area = document.querySelector('.form_area'); //入力フォームの情報を取得
+                let key = input_area.id; //inputエリアのid（li_id）をkeyに格納
+                let flag = form_area.id; //formエリアのid(li_class)をflagに格納
+                let new_obj = new item; //新しいオブジェクトを生成
+                // 入力画面に記入されたデータをnew_objに更新
+                new_obj.myName = key; // 引き出したオブジェクトの名前を代入
+                new_obj.myTitle = document.querySelector('#title').value;
+                new_obj.myStart_date = document.querySelector('#start-date').value;
+                new_obj.myEnd_date = document.querySelector('#end-date').value;
+                new_obj.myDescription = document.querySelector('#description').value;
+                new_obj.myCheckbox1 = document.querySelector('#checkbox-text1').value;
+                new_obj.myCheckbox2 = document.querySelector('#checkbox-text2').value;
+                new_obj.myCheckbox3 = document.querySelector('#checkbox-text3').value;
+                new_obj.myCheckbox4 = document.querySelector('#checkbox-text4').value;
+                new_obj.myCheckbox5 = document.querySelector('#checkbox-text5').value;
+                new_obj.myFlag = flag;
+                // チェックボックスにチェックがあるか判断
+                for (let i = 1; i <= 5; i++) {
+                    let judge = document.getElementById("checkbox" + i + "");
+                    if (judge.checked) {
+                        let Name = 'check' + i;
+                        new_obj[Name] = true;
+                    }
+                }
+                let json = JSON.stringify(new_obj); //更新オブジェクトをJSON化
+                localStorage.setItem(key, json); //ローカルストレージを更新し保存
+                let li_id = document.querySelector("#" + key + ""); //liタグを選択
+                li_id.textContent = document.querySelector('#title').value; //liタグにタイトルを挿入
+                $('.blind').hide();
+                $('.input_area').hide();
+            }
+        })
+    /*-----------------------------------------------------------------*/
+    // ゴミ箱に入れたらliタグの削除
+    $('li').on('dragstart', onDragStart);
+    $('.position').on('dragover', onDragOver); //ドロップイベントを行うためににはdragoverイベントが必須
+    $('.position').on('drop', onDrop);
+    let li_html = ""; //ドラッグした要素の取得ための変数
+
+    //掴んだ要素を取得
+    function onDragStart(e) {
+        li_html = e.target;
+    }
+
+    //ドラッグオーバー時に.フォルトのブラウザの挙動を止める
+    function onDragOver(e) {
+        e.preventDefault();
+        // ドラックオーバーされたらゴミ箱にCSSを適用
+        e.target.classList.add("active");
+        timeoutId = setTimeout( function () {
+            e.target.classList.remove( "active" ) ;
+        }, 1000) ;
+    }
+
+    //ドロップした時に発火
+    function onDrop(e) {
+            if(confirm("「" + li_html.textContent + "」を削除しますか？")){
+                e.preventDefault();
+                let delete_li = li_html.id //ドラッグしている要素のIDを取得
+                console.log(delete_li);
+                localStorage.removeItem(delete_li); //ID名（key）を基に対象のデータを削除
+                $('#' + delete_li + '').remove; //対象のliのHTMLを削除
+            }
+        location.reload(); //ページの再読み込み
+    }
+
+    /*-----------------------------------------------------------------*/
+    //入力画面でチェックがついたら取り消し線をひく
+    $('input[type="checkbox"]').click(function () {
+        if (this.checked) {
+            // チェックボックスの次の要素を取得
+            let text = this.nextElementSibling;
+            // 取り消し線をCSSで指定
+            text.style.textDecoration = "line-through";
+            text.style.color = "gray";
+        } else {
+            // チェックボックスの次の要素を取得
+            let text = this.nextElementSibling;
+            text.style.textDecoration = "none";
+            text.style.color = "white";
+        }
+    });
+
+    /*-----------------------------------------------------------------*/
+    //liタグのカウントをする
+
+    function countLi1(){
+        //ulタグの子要素数を取得
+        const items1 = document.getElementById('items1');
+        //差し込むspanのタグを取得
+        const span = document.getElementById('li_count1');
+        // 子要素のカウント（divの1要素分は引く）
+        let count1 = items1.childElementCount - 1;
+        span.innerHTML =count1;
+    }
+
+    function countLi2() {
+            //ulタグの子要素数を取得
+            const items1 = document.getElementById('items2');
+            //差し込むspanのタグを取得
+            const span = document.getElementById('li_count2');
+            // 子要素のカウント（divの1要素分は引く）
+            let count1 = items1.childElementCount - 1;
+            span.innerHTML = count1;
+        }
+
+    function countLi3() {
+        //ulタグの子要素数を取得
+        const items1 = document.getElementById('items3');
+        //差し込むspanのタグを取得
+        const span = document.getElementById('li_count3');
+        // 子要素のカウント（divの1要素分は引く）
+        let count1 = items1.childElementCount - 1;
+        span.innerHTML = count1;
+    }
+
+    //リロードする度に実行
+    window.onload = (event) => {
+        countLi1();
+        countLi2();
+        countLi3();
+    };
+
+</script>
+</body>
+</html>

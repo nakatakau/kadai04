@@ -1,0 +1,12 @@
+/* 全体の設定 */
+html {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 800px;
+}
+
+/* 入力画面 */
+.day-box {
+  display: flex;
+  justify-content: space-evenly;
+}
